@@ -1,0 +1,30 @@
+name: Full-stack DevOps PR Build
+
+on:
+  push:
+    branches:
+    - '!main'
+  pull_request:
+    branches:
+    - '**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v4
+
+      - name: Docker Build & Push, Kubernetes Apply
+        run: |
+          set -x
+
+          cd api
+          docker build -t fullstack-api-pr:${{ github.sha }} .
+          cd ..
+
+          cd app
+          docker build -t fullstack-app-pr:${{ github.sha }} .
+          cd ..

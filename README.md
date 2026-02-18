@@ -1,6 +1,8 @@
 Full-Stack DevOps: Containerize and Deploy to Kubernetes
 ========================================================
 
+[![Full-stack DevOps](https://github.com/robrich/full-stack-devops-kubernetes/actions/workflows/fullstackdevops.yaml/badge.svg)](https://github.com/robrich/full-stack-devops-kubernetes/actions/workflows/fullstackdevops.yaml)
+
 This is a live demo of building a DevOps pipeline to deploy containers to Kubernetes.
 
 This app includes a React frontend app and a .NET backend API.

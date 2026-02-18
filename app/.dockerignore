@@ -10,3 +10,5 @@
 # secrets
 **/.env*
 # non-production files
+k8s.yaml
+Dockerfile
