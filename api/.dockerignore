@@ -1,0 +1,19 @@
+# downloaded files
+
+# built files
+**/bin
+**/obj
+**/dist
+# user-specific files
+**/.vs
+**/*.suo
+**/*.user
+# temp files
+**/.DS_Store
+**/*.log
+# secrets
+
+# non-production files
+**/*.http
+**/appsettings.Development.json
+**/launchSettings.json

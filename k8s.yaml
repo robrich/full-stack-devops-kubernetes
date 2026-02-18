@@ -1,0 +1,110 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fullstack-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fullstack-api
+  template:
+    metadata:
+      labels:
+        app: fullstack-api
+        version: IMAGE_LABEL
+    spec:
+      containers:
+      - name: fullstack-api
+        image: ACR_URL/fullstack-api:IMAGE_LABEL
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "128m"
+        ports:
+        - containerPort: 5000
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Production"
+        - name: ASPNETCORE_URLS
+          value: "http://+:5000"
+        - name: ConnectionStrings__DefaultConnection
+          value: "TODO: move to k8s secret"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fullstack-api
+spec:
+  selector:
+    app: fullstack-api
+  ports:
+  - port: 5000
+    targetPort: 5000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fullstack-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fullstack-app
+  template:
+    metadata:
+      labels:
+        app: fullstack-app
+        version: IMAGE_LABEL
+    spec:
+      containers:
+      - name: fullstack-app
+        image: ACR_URL/fullstack-app:IMAGE_LABEL
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "128m"
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fullstack-app
+spec:
+  selector:
+    app: fullstack-app
+  ports:
+  - port: 80
+    targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: fullstack
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    acme.cert-manager.io/http01-edit-in-place: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - fullstackdevops.AKS_URL
+    secretName: tls-secret
+  rules:
+  - host: fullstackdevops.AKS_URL
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/api"
+        backend:
+          service:
+            name: fullstack-api
+            port:
+              number: 5000
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: fullstack-app
+            port:
+              number: 80
