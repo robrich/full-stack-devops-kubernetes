@@ -5,7 +5,7 @@ WORKDIR /src
 
 COPY FullStackDevOps.slnx .
 COPY FullStackDevOps.Server/FullStackDevOps.Server.csproj FullStackDevOps.Server/FullStackDevOps.Server.csproj
-COPY FullStackDevOps.Client/FullStackDevOps.Client.csproj FullStackDevOps.AppHost/FullStackDevOps.AppHost.csproj
+COPY FullStackDevOps.AppHost/FullStackDevOps.AppHost.csproj FullStackDevOps.AppHost/FullStackDevOps.AppHost.csproj
 RUN dotnet restore FullStackDevOps.slnx
 
 COPY . .

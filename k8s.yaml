@@ -47,6 +47,7 @@ kind: Deployment
 metadata:
   name: fullstack-app
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: fullstack-app
