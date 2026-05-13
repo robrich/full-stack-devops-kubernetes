@@ -1,0 +1,28 @@
+name: Full Stack DevOps PR
+
+on:
+  push:
+    branches:
+    - '!main'
+  pull_request:
+    branches:
+    - '**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: actions/checkout@v4
+
+      - name: Docker build a PR
+        run: |
+          cd api
+          docker build -t ${{ secrets.ACR_URL }}/fullstack-api:${{ github.sha }} .
+          cd ..
+          cd app
+          docker build -t ${{ secrets.ACR_URL }}/fullstack-app:${{ github.sha }} .
+          cd ..
+          # kick off integration tests
