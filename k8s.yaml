@@ -82,7 +82,15 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: fullstack
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    acme.cert-manager.io/http01-edit-in-place: "true"
 spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - fullstackdevops.AKS_URL
+    secretName: tls-secret
   rules:
   - host: fullstackdevops.AKS_URL
     http:
