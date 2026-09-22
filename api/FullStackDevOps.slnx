@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="frontend/frontend.esproj">
+    <Build />
+  </Project>
+  <Project Path="FullStackDevOps.AppHost/FullStackDevOps.AppHost.csproj" />
+  <Project Path="FullStackDevOps.Server/FullStackDevOps.Server.csproj" />
+</Solution>

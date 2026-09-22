@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fullstack-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fullstack-api
+  template:
+    metadata:
+      labels:
+        app: fullstack-api
+        version: IMAGE_LABEL
+    spec:
+      containers:
+      - name: fullstack-api
+        image: AKS_URL/fullstack-api:IMAGE_LABEL
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "128m"
+        ports:
+        - containerPort: 5000
+        env:
+        - name: ConnectionStrings__MyDB
+          value: "" # TODO Move this to secrets
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fullstack-api
+spec:
+  selector:
+    app: fullstack-api
+  ports:
+  - port: 5000
+    targetPort: 5000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fullstack-app
+spec:
+  selector:
+    matchLabels:
+      app: fullstack-app
+  template:
+    metadata:
+      labels:
+        app: fullstack-app
+        version: IMAGE_LABEL
+    spec:
+      containers:
+      - name: fullstack-app
+        image: AKS_URL/fullstack-app:IMAGE_LABEL
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "128m"
+        ports:
+        - containerPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: fullstack
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    acme.cert-manager.io/http01-edit-in-place: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - fullstackdevops.AKS_URL
+    secretName: tls-secret
+  rules:
+  - host: fullstackdevops.AKS_URL
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/api"
+        backend:
+          service:
+            name: fullstack-api
+            port:
+              number: 5000
+      - pathType: Prefix
+        backend:
+          service:
+            name: fullstack-app
+            port:
+              number: 80

@@ -1,0 +1,19 @@
+<Project Sdk="Aspire.AppHost.Sdk/13.5.4">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AspireUseCliBundle>true</AspireUseCliBundle>
+    <UserSecretsId>c9f066a8-679b-4205-8ae2-dc30598b3be8</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FullStackDevOps.Server\FullStackDevOps.Server.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.JavaScript" Version="13.5.4" />
+  </ItemGroup>
+</Project>
