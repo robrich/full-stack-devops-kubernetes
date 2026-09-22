@@ -36,6 +36,7 @@ jobs:
           cd ..
           cd app
           docker build -t ${{ secrets.ACR_URL }}/fullstack-app:${{ github.sha }} .
+          cd ..
           # run integration tests here
           docker push ${{ secrets.ACR_URL }}/fullstack-api:${{ github.sha }}
           docker push ${{ secrets.ACR_URL }}/fullstack-app:${{ github.sha }}
