@@ -14,6 +14,7 @@
 **/*.temp
 **/.DS_Store
 # secrets
+k8s.yaml
 # non-production files
 **/appsettings.*.json
 **/launchSettings.json
